@@ -1,0 +1,17 @@
+[
+  {
+    "question": "Che formaggio useresti?",
+    "answers": ["Pecorino", "Grana", "Gruviera"],
+    "correct": 0
+  },
+  {
+    "question": "Quante uova metti nel sugo?",
+    "answers": ["1 uovo per persona", "1 rosso per persona", "2 uova a testa"],
+    "correct": 1
+  },
+  {
+    "question": "Che insaccato utilizzi?",
+    "answers": ["Pancetta", "Guanciale", "Prosciutto"],
+    "correct": 1
+  }
+]

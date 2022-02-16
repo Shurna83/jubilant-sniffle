@@ -1,0 +1,55 @@
+import { fetchQuestions } from "./apiClient";
+
+test("fetchQuestions should make proper GET request", async () => {
+  mockAxiosGet.mockResolvedValueOnce("[]");
+  await fetchQuestions();
+
+  expect(mockAxiosGet).toBeCalledTimes(1);
+  expect(mockAxiosGet).toBeCalledWith("data.json");
+});
+
+test("fetchQuestions should parse response data", async () => {
+  const jsonQuestions = `[
+      {
+        "question": "q1",
+        "answers": ["a11", "a12", "a13"],
+        "correct": 0,
+      },
+      {
+        "question": "q2",
+        "answers": ["a21", "a22", "a23"],
+        "correct": 2,
+      }
+    ]`;
+  mockAxiosGet.mockResolvedValueOnce(jsonQuestions);
+
+  const questions = await fetchQuestions();
+
+  expect(questions).toStrictEqual([
+    {
+      question: "q1",
+      answers: ["a11", "a12", "a13"],
+      correct: 0,
+    },
+    {
+      question: "q2",
+      answers: ["a21", "a22", "a23"],
+      correct: 2,
+    },
+  ]);
+});
+
+test("when GET request fails, then fetchQuestions should reject with proper error", async () => {
+  const errMsg = "Bad things happened";
+  mockAxiosGet.mockRejectedValueOnce({ error: { request: errMsg } });
+
+  await expect(fetchQuestions()).rejects.toEqual(errMsg);
+});
+
+test("when GET response fails, then fetchQuestions should reject with proper error", async () => {
+  mockAxiosGet.mockRejectedValueOnce({
+    error: { response: { data: "Server error", status: "500" } },
+  });
+
+  await expect(fetchQuestions()).rejects.toEqual("500: Server error");
+});
