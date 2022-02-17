@@ -5,6 +5,7 @@ import { IRecipeStore, newRecipeStore } from "./recipeStore";
 export type RootStore = {
   quizStore: IQuizStore;
   recipeStore: IRecipeStore;
+  init(): Promise<void>;
 };
 
 let rootStore: RootStore | null = null;
@@ -20,5 +21,8 @@ function newRootStore(): RootStore {
   return {
     quizStore,
     recipeStore,
+    init: async () => {
+      await recipeStore.start();
+    },
   };
 }
