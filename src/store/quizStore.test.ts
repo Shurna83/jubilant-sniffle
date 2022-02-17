@@ -4,6 +4,7 @@ import {
   QuizResult,
   RecipeQuestion,
 } from "../domain/definitions";
+import { getTwoQuestions } from "../__test__/utils/fakeData";
 import { IQuizStore, newQuizStore, UIQuestion } from "./quizStore";
 import { IRecipeStore } from "./recipeStore";
 
@@ -13,16 +14,15 @@ const mockNewQuizResult = newQuizResult as jest.MockedFunction<
 >;
 
 test("when some questions, then first step should be first question", () => {
-  const questions = givenTwoQuestions();
+  const questions = getTwoQuestions();
   const quizStore = createQuizStore(questions);
 
-  expect(quizStore.isQuestionStep).toBeTruthy();
   expect(quizStore.quizResult).toBeNull();
   ensureQuestionsMatch(quizStore.currentQuestion, questions[0]);
 });
 
 test("when completing first step, then current step become the second one", () => {
-  const questions = givenTwoQuestions();
+  const questions = getTwoQuestions();
   const quizStore = createQuizStore(questions);
 
   quizStore.currentQuestion!.setAnswer(0);
@@ -31,17 +31,14 @@ test("when completing first step, then current step become the second one", () =
 });
 
 test("when completing last step, then current step become the quiz result", () => {
-  const fakeResult = {
-    domainId: "result",
-  } as unknown as QuizResult;
+  const fakeResult = {} as unknown as QuizResult;
   mockNewQuizResult.mockReturnValueOnce(fakeResult);
-  const questions = givenTwoQuestions();
+  const questions = getTwoQuestions();
   const quizStore = createQuizStore(questions);
 
   quizStore.currentQuestion!.setAnswer(0);
   quizStore.currentQuestion!.setAnswer(0);
 
-  expect(quizStore.isQuestionStep).toBeFalsy();
   expect(quizStore.currentQuestion).toBeNull();
   expect(quizStore.quizResult).toBe(fakeResult);
 });
@@ -51,12 +48,11 @@ test("when no questions, then current step is null", () => {
 
   expect(quizStore.currentQuestion).toBeNull();
   expect(quizStore.quizResult).toBeNull();
-  expect(quizStore.isQuestionStep).toBeFalsy();
 });
 
 describe("reactivity", () => {
   test("when step changes, then currentQuestion is recomputed", () => {
-    const quizStore = createQuizStore(givenTwoQuestions());
+    const quizStore = createQuizStore(getTwoQuestions());
     let reactionTriggered = false;
     reaction(
       () => quizStore.currentQuestion,
@@ -71,7 +67,7 @@ describe("reactivity", () => {
   });
 
   test("when all questions answered, then quizResult is recomputed", () => {
-    const quizStore = createQuizStore(givenTwoQuestions());
+    const quizStore = createQuizStore(getTwoQuestions());
     let reactionTriggered = false;
     reaction(
       () => quizStore.quizResult,
@@ -85,40 +81,7 @@ describe("reactivity", () => {
 
     expect(reactionTriggered).toBe(true);
   });
-
-  test("when all questions answered, then isQuestionStep is recomputed", () => {
-    const quizStore = createQuizStore(givenTwoQuestions());
-    let reactionTriggered = false;
-    reaction(
-      () => quizStore.isQuestionStep,
-      () => {
-        reactionTriggered = true;
-      }
-    );
-
-    quizStore.currentQuestion!.setAnswer(0);
-    quizStore.currentQuestion!.setAnswer(0);
-
-    expect(reactionTriggered).toBe(true);
-  });
 });
-
-function givenTwoQuestions(): RecipeQuestion[] {
-  return [
-    {
-      domainId: "question",
-      answers: ["a11", "a12"],
-      correctAnswerId: 0,
-      question: "q1",
-    },
-    {
-      domainId: "question",
-      answers: ["a21", "a22"],
-      correctAnswerId: 1,
-      question: "q2",
-    },
-  ];
-}
 
 function createQuizStore(questions: RecipeQuestion[]): IQuizStore {
   const recipeStore = { questions } as unknown as IRecipeStore;

@@ -20,9 +20,8 @@ function parseQuestions(json: string): Either<string, RecipeQuestion[]> {
     const raw: RawRecipeQuestion[] = JSON.parse(json);
     const questions: RecipeQuestion[] = raw.map(
       ({ answers, correct, question }) => ({
-        domainId: "question",
         correctAnswerId: correct,
-        answers,
+        answers: answers.map((a, i) => ({ answer: a, id: i })),
         question,
       })
     );

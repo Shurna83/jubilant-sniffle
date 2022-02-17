@@ -1,6 +1,9 @@
-import { RecipeQuestion } from "../domain/definitions";
 import { httpGet } from "../http/httpClient";
 import { isLeft, isRight, left, right } from "../utils/either";
+import {
+  getTwoQuestions,
+  getTwoQuestionsJSON,
+} from "../__test__/utils/fakeData";
 import { fetchQuestions } from "./apiClient";
 
 jest.mock("../http/httpClient");
@@ -21,36 +24,13 @@ describe("fetchQuestions", () => {
   });
 
   test("should parse response data", async () => {
-    const jsonQuestions = `[
-    {
-      "question": "q1",
-      "answers": ["a11", "a12", "a13"],
-      "correct": 0
-    },
-    {
-      "question": "q2",
-      "answers": ["a21", "a22", "a23"],
-      "correct": 2
-    }]`;
+    const jsonQuestions = getTwoQuestionsJSON();
     mockHttpGet.mockResolvedValueOnce(right(jsonQuestions));
 
     const res = await fetchQuestions();
 
     expect(isRight(res)).toBeTruthy();
-    expect(res.value).toStrictEqual([
-      {
-        question: "q1",
-        answers: ["a11", "a12", "a13"],
-        correctAnswerId: 0,
-        domainId: "question",
-      },
-      {
-        question: "q2",
-        answers: ["a21", "a22", "a23"],
-        correctAnswerId: 2,
-        domainId: "question",
-      },
-    ] as RecipeQuestion[]);
+    expect(res.value).toStrictEqual(getTwoQuestions());
   });
 
   test("when error parsing JSON, then should resolve with error", async () => {

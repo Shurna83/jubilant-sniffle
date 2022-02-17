@@ -1,16 +1,15 @@
-export type DomainId = "question" | "result";
+export type Answer = { answer: string; id: number };
 
 export type RecipeQuestion = {
-  readonly domainId: Extract<DomainId, "question">;
-
   readonly question: string;
-  readonly answers: string[];
+  readonly answers: Answer[];
   readonly correctAnswerId: number;
 };
 
 export type QuizResult = {
-  readonly domainId: Extract<DomainId, "result">;
   readonly finalEvaluation: string;
+  readonly correctAnswers: number;
+  readonly totalQuestions: number;
 };
 
 const evaluationMap = new Map<number, string>();
@@ -19,10 +18,14 @@ evaluationMap.set(1, "Non ci siamo");
 evaluationMap.set(2, "Devi studiare di più");
 evaluationMap.set(3, "Bravo");
 
-export function newQuizResult(correctAnswersCount: number): QuizResult {
+export function newQuizResult(
+  correctAnswersCount: number,
+  totQuestions: number
+): QuizResult {
   return {
-    domainId: "result",
     finalEvaluation: toFinalEvaluation(correctAnswersCount),
+    correctAnswers: correctAnswersCount,
+    totalQuestions: totQuestions,
   };
 }
 

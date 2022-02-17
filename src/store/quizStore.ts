@@ -6,17 +6,13 @@ import {
 } from "../domain/definitions";
 import { IRecipeStore } from "./recipeStore";
 
-export type UIQuestion = Pick<
-  RecipeQuestion,
-  "domainId" | "question" | "answers"
-> & {
+export type UIQuestion = Pick<RecipeQuestion, "question" | "answers"> & {
   setAnswer: (answerId: number) => void;
 };
 
 export interface IQuizStore {
   readonly currentQuestion: UIQuestion | null;
   readonly quizResult: QuizResult | null;
-  readonly isQuestionStep: boolean;
 }
 
 class QuizStore implements IQuizStore {
@@ -32,11 +28,9 @@ class QuizStore implements IQuizStore {
       return null;
     }
 
-    const { questions } = this._recipeStore;
-    const { domainId, answers, question, correctAnswerId } =
-      questions[this._currentStepIdx];
+    const { answers, question, correctAnswerId } =
+      this._recipeStore.questions[this._currentStepIdx];
     return {
-      domainId,
       answers,
       question,
       setAnswer: (answerId: number) => {
@@ -51,13 +45,12 @@ class QuizStore implements IQuizStore {
   public get quizResult(): QuizResult | null {
     return this.isQuestionStep
       ? null
-      : this.areThereAnyQuestions
-      ? newQuizResult(this._correctAnswersCount)
+      : this._recipeStore.questions.length > 0
+      ? newQuizResult(
+          this._correctAnswersCount,
+          this._recipeStore.questions.length
+        )
       : null;
-  }
-
-  public get areThereAnyQuestions(): boolean {
-    return this._recipeStore.questions.length > 0;
   }
 
   public get isQuestionStep(): boolean {

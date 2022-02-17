@@ -2,6 +2,7 @@ import { reaction } from "mobx";
 import { fetchQuestions } from "../api/apiClient";
 import { RecipeQuestion } from "../domain/definitions";
 import { left, right } from "../utils/either";
+import { getTwoQuestions } from "../__test__/utils/fakeData";
 import { IErrorStore } from "./errorsStore";
 import { IRecipeStore, newRecipeStore } from "./recipeStore";
 
@@ -25,20 +26,7 @@ describe("start", () => {
   });
 
   test("when fetch succeeds, then results are recomputed by MobX", async () => {
-    const questions = [
-      {
-        domainId: "question",
-        answers: ["A", "B"],
-        question: "Q1",
-        correctAnswerId: 0,
-      },
-      {
-        domainId: "question",
-        answers: ["C", "D"],
-        question: "Q2",
-        correctAnswerId: 1,
-      },
-    ] as RecipeQuestion[];
+    const questions = getTwoQuestions();
     mockFetchQuestions.mockResolvedValueOnce(right(questions));
     const { recipeStore } = createStores();
     let res: RecipeQuestion[] = [];
