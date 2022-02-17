@@ -1,6 +1,4 @@
-import { Either, isLeft, left, right } from "../utils/either";
-
-type DomainId = "question" | "result";
+export type DomainId = "question" | "result";
 
 export type RecipeQuestion = {
   readonly domainId: Extract<DomainId, "question">;
@@ -21,22 +19,15 @@ evaluationMap.set(1, "Non ci siamo");
 evaluationMap.set(2, "Devi studiare di più");
 evaluationMap.set(3, "Bravo");
 
-export function newQuizResult(
-  correctAnswersCount: number
-): Either<string, QuizResult> {
-  const res = toFinalEvaluation(correctAnswersCount);
-  if (isLeft(res)) {
-    return res;
-  }
-  const quizRes: QuizResult = {
+export function newQuizResult(correctAnswersCount: number): QuizResult {
+  return {
     domainId: "result",
-    finalEvaluation: res.value,
+    finalEvaluation: toFinalEvaluation(correctAnswersCount),
   };
-  return right(quizRes);
 }
 
-function toFinalEvaluation(correctAnswers: number): Either<string, string> {
+function toFinalEvaluation(correctAnswers: number): string {
   return evaluationMap.has(correctAnswers)
-    ? right(evaluationMap.get(correctAnswers)!)
-    : left("Cannot detect quiz result");
+    ? evaluationMap.get(correctAnswers)!
+    : evaluationMap.get(0)!;
 }

@@ -1,46 +1,70 @@
-import { makeAutoObservable } from "mobx";
-import { newQuizResult, QuizResult, RecipeQuestion } from "../domain/domain";
-import { Either, isLeft, left, right } from "../utils/either";
+import { makeAutoObservable, runInAction } from "mobx";
+import {
+  newQuizResult,
+  QuizResult,
+  RecipeQuestion,
+} from "../domain/definitions";
 import { IRecipeStore } from "./recipeStore";
 
-type QuizStep = RecipeQuestion | QuizResult;
+export type UIQuestion = Pick<
+  RecipeQuestion,
+  "domainId" | "question" | "answers"
+> & {
+  setAnswer: (answerId: number) => void;
+};
 
 export interface IQuizStore {
-  readonly nextStep: Either<string, QuizStep>;
-  setAnswer(question: RecipeQuestion, answer: number): void;
+  readonly currentQuestion: UIQuestion | null;
+  readonly quizResult: QuizResult | null;
+  readonly isQuestionStep: boolean;
 }
 
 class QuizStore implements IQuizStore {
-  private readonly _currentStep: number = 0;
-
+  private _currentStepIdx: number = 0;
   private _correctAnswersCount: number = 0;
 
   constructor(private readonly _recipeStore: IRecipeStore) {
     makeAutoObservable(this);
   }
 
-  public get currentStep(): number {
-    return this._currentStep;
-  }
+  public get currentQuestion(): UIQuestion | null {
+    if (!this.isQuestionStep) {
+      return null;
+    }
 
-  public get nextStep(): Either<string, QuizStep> {
     const { questions } = this._recipeStore;
-    if (this._currentStep < 0 || this._currentStep > questions.length) {
-      return left("Something went wrong reading quiz step");
-    }
-
-    if (this._currentStep === questions.length) {
-      const res = newQuizResult(this._correctAnswersCount);
-      return isLeft(res) ? left<string>(res.value) : res;
-    }
-
-    return right(questions[this._currentStep]);
+    const { domainId, answers, question, correctAnswerId } =
+      questions[this._currentStepIdx];
+    return {
+      domainId,
+      answers,
+      question,
+      setAnswer: (answerId: number) => {
+        runInAction(() => {
+          this._correctAnswersCount += answerId === correctAnswerId ? 1 : 0;
+          this._currentStepIdx++;
+        });
+      },
+    };
   }
 
-  public setAnswer(question: RecipeQuestion, answer: number): void {
-    if (question.correctAnswerId === answer) {
-      this._correctAnswersCount++;
-    }
+  public get quizResult(): QuizResult | null {
+    return this.isQuestionStep
+      ? null
+      : this.areThereAnyQuestions
+      ? newQuizResult(this._correctAnswersCount)
+      : null;
+  }
+
+  public get areThereAnyQuestions(): boolean {
+    return this._recipeStore.questions.length > 0;
+  }
+
+  public get isQuestionStep(): boolean {
+    return (
+      this._currentStepIdx >= 0 &&
+      this._currentStepIdx < this._recipeStore.questions.length
+    );
   }
 }
 

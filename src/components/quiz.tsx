@@ -1,9 +1,9 @@
-import { RecipeQuestion } from "../domain/domain";
+import { RecipeQuestion } from "../domain/definitions";
 import { useQuizStore } from "../store/reactBindings";
 import { isLeft } from "../utils/either";
 
 export function Quiz(): JSX.Element {
-  const { nextStep } = useQuizStore();
+  const { currentStep: nextStep } = useQuizStore();
   if (isLeft(nextStep)) {
     return <span>{nextStep.value}</span>;
   }

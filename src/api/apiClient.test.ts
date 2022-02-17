@@ -1,4 +1,4 @@
-import { RecipeQuestion } from "../domain/domain";
+import { RecipeQuestion } from "../domain/definitions";
 import { httpGet } from "../http/httpClient";
 import { isLeft, isRight, left, right } from "../utils/either";
 import { fetchQuestions } from "./apiClient";

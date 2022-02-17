@@ -1,6 +1,6 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import { fetchQuestions } from "../api/apiClient";
-import { RecipeQuestion } from "../domain/domain";
+import { RecipeQuestion } from "../domain/definitions";
 import { isRight } from "../utils/either";
 import { IErrorStore } from "./errorsStore";
 

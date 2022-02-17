@@ -1,6 +1,6 @@
 import { reaction } from "mobx";
 import { fetchQuestions } from "../api/apiClient";
-import { RecipeQuestion } from "../domain/domain";
+import { RecipeQuestion } from "../domain/definitions";
 import { left, right } from "../utils/either";
 import { IErrorStore } from "./errorsStore";
 import { IRecipeStore, newRecipeStore } from "./recipeStore";
