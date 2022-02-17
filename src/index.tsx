@@ -1,15 +1,19 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { Provider } from "react-redux";
 import App from "./App";
-import "./index.css";
 import reportWebVitals from "./reportWebVitals";
+
+if (
+  !new (class {
+    x: any;
+  })().hasOwnProperty("x")
+) {
+  throw new Error("Transpiler is not configured correctly");
+}
 
 ReactDOM.render(
   <React.StrictMode>
-    <Provider store={newStore()}>
-      <App />
-    </Provider>
+    <App />
   </React.StrictMode>,
   document.getElementById("root")
 );

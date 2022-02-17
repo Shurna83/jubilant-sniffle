@@ -10,12 +10,12 @@ export interface Right<B> {
 
 export type Either<A, B> = Left<A> | Right<B>;
 
-export function isLeft<A>(val: unknown): val is Left<A> {
-  return (val as Left<A>).tag === "left";
+export function isLeft(val: Either<unknown, unknown>): val is Left<unknown> {
+  return (val as Left<unknown>).tag === "left";
 }
 
-export function isRight<B>(val: unknown): val is Right<B> {
-  return (val as Right<B>).tag === "right";
+export function isRight(val: Either<unknown, unknown>): val is Right<unknown> {
+  return (val as Right<unknown>).tag === "right";
 }
 
 export function left<A>(val: A): Left<A> {

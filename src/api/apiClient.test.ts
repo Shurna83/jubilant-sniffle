@@ -1,3 +1,4 @@
+import { RecipeQuestion } from "../domain/domain";
 import { httpGet } from "../http/httpClient";
 import { isLeft, isRight, left, right } from "../utils/either";
 import { fetchQuestions } from "./apiClient";
@@ -40,14 +41,16 @@ describe("fetchQuestions", () => {
       {
         question: "q1",
         answers: ["a11", "a12", "a13"],
-        correct: 0,
+        correctAnswerId: 0,
+        domainId: "question",
       },
       {
         question: "q2",
         answers: ["a21", "a22", "a23"],
-        correct: 2,
+        correctAnswerId: 2,
+        domainId: "question",
       },
-    ]);
+    ] as RecipeQuestion[]);
   });
 
   test("when error parsing JSON, then should resolve with error", async () => {
