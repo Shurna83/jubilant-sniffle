@@ -83,7 +83,7 @@ describe("reactivity", () => {
     expect(reactionTriggered).toBe(true);
   });
 
-  test("when step changes, then canAskQuestion is recomputed", () => {
+  test("when all questions answered, then canAskQuestion is recomputed", () => {
     const quizStore = createQuizStore(getTwoQuestions());
     let reactionTriggered = false;
     reaction(
@@ -93,6 +93,7 @@ describe("reactivity", () => {
       }
     );
 
+    quizStore.currentQuestion!.setAnswer(0);
     quizStore.currentQuestion!.setAnswer(0);
 
     expect(reactionTriggered).toBe(true);

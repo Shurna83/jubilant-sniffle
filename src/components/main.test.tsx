@@ -17,6 +17,11 @@ const mockUseQuizStore = useQuizStore as jest.MockedFunction<
   typeof useQuizStore
 >;
 
+afterEach(() => {
+  mockUseErrorStore.mockReset();
+  mockUseQuizStore.mockReset();
+});
+
 test("when an error is set, then it is rendered", () => {
   const error = "an error";
   const errorStore = givenAnErrorStore(error);
@@ -25,7 +30,7 @@ test("when an error is set, then it is rendered", () => {
     quizResult: null,
     canAskQuestion: false,
   };
-  mockUseQuizStore.mockReturnValueOnce(quizStore);
+  mockUseQuizStore.mockReturnValue(quizStore);
 
   renderMain({ errorStore, quizStore });
 
@@ -40,7 +45,7 @@ test("when an error is set, then it takes precedence over a question", () => {
     quizResult: null,
     canAskQuestion: true,
   };
-  mockUseQuizStore.mockReturnValueOnce(quizStore);
+  mockUseQuizStore.mockReturnValue(quizStore);
 
   renderMain({ errorStore, quizStore });
 
@@ -55,7 +60,7 @@ test("when an error is set, then it takes precedence over a result", () => {
     quizResult: { correctAnswers: 1, totalQuestions: 1, finalEvaluation: "OK" },
     canAskQuestion: false,
   };
-  mockUseQuizStore.mockReturnValueOnce(quizStore);
+  mockUseQuizStore.mockReturnValue(quizStore);
 
   renderMain({ errorStore, quizStore });
 
@@ -70,7 +75,7 @@ test("when a result is set, then it is displayed", () => {
     quizResult: { correctAnswers: 1, totalQuestions: 1, finalEvaluation },
     canAskQuestion: false,
   };
-  mockUseQuizStore.mockReturnValueOnce(quizStore);
+  mockUseQuizStore.mockReturnValue(quizStore);
 
   renderMain({ errorStore, quizStore });
 
@@ -89,7 +94,7 @@ test("when a question is set, then it is displayed", () => {
     quizResult: null,
     canAskQuestion: true,
   };
-  mockUseQuizStore.mockReturnValueOnce(quizStore);
+  mockUseQuizStore.mockReturnValue(quizStore);
 
   renderMain({ errorStore, quizStore });
 
@@ -113,6 +118,6 @@ function renderMain({
 
 function givenAnErrorStore(err?: string): IErrorStore {
   const errorStore = { error: err ?? null } as IErrorStore;
-  mockUseErrorStore.mockReturnValueOnce(errorStore);
+  mockUseErrorStore.mockReturnValue(errorStore);
   return errorStore;
 }
