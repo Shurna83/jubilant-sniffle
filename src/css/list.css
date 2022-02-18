@@ -22,4 +22,5 @@ ol li + li {
 
 li:hover {
   color: var(--quiz-primary-color);
+  cursor: pointer;
 }

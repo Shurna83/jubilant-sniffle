@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
-import { Header } from "./components/header";
-import { Quiz } from "./components/quiz";
+import { Main } from "./components/main";
 import { RootStore } from "./store/rootStore";
 import { useRootStore } from "./store/storeContext";
 
@@ -14,12 +13,7 @@ function App() {
     kickItAllOff(rootStore);
   }, [rootStore]);
 
-  return (
-    <div className="vBox crossAxisCenter gap3">
-      <Header />
-      <Quiz />
-    </div>
-  );
+  return <Main />;
 }
 
 export default App;

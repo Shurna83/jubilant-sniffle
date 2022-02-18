@@ -3,14 +3,14 @@ import { AnswersList } from "./answerList";
 
 type QuestionProps = { question: UIQuestion };
 
-export function Question({ question }: QuestionProps): JSX.Element {
+export function Question({ question }: QuestionProps) {
   const handleUserAnswer = (id: number) => {
     question.setAnswer(id);
   };
   return (
-    <>
+    <div className="question">
       <h4 className="questionText">{question.question}</h4>
       <AnswersList answers={question.answers} onClick={handleUserAnswer} />
-    </>
+    </div>
   );
 }

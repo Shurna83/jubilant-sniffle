@@ -10,6 +10,7 @@ export type UIQuestion = Pick<RecipeQuestion, "question" | "answers"> & {
 export interface IQuizStore {
   readonly currentQuestion: UIQuestion | null;
   readonly quizResult: QuizResult | null;
+  readonly canAskQuestion: boolean;
 }
 
 class QuizStore implements IQuizStore {
@@ -21,7 +22,7 @@ class QuizStore implements IQuizStore {
   }
 
   public get currentQuestion(): UIQuestion | null {
-    if (!this.isQuestionStep) {
+    if (!this.canAskQuestion) {
       return null;
     }
 
@@ -40,7 +41,7 @@ class QuizStore implements IQuizStore {
   }
 
   public get quizResult(): QuizResult | null {
-    return this.isQuestionStep
+    return this.canAskQuestion
       ? null
       : this._recipeStore.questions.length === 0
       ? null
@@ -50,7 +51,7 @@ class QuizStore implements IQuizStore {
         );
   }
 
-  public get isQuestionStep(): boolean {
+  public get canAskQuestion(): boolean {
     return (
       this._currentStepIdx >= 0 &&
       this._currentStepIdx < this._recipeStore.questions.length

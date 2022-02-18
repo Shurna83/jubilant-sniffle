@@ -16,6 +16,7 @@ test("when some questions, then first step should be first question", () => {
 
   expect(quizStore.quizResult).toBeNull();
   ensureQuestionsMatch(quizStore.currentQuestion, questions[0]);
+  expect(quizStore.canAskQuestion).toBe(true);
 });
 
 test("when completing first step, then current step become the second one", () => {
@@ -25,6 +26,7 @@ test("when completing first step, then current step become the second one", () =
   quizStore.currentQuestion!.setAnswer(0);
 
   ensureQuestionsMatch(quizStore.currentQuestion, questions[1]);
+  expect(quizStore.canAskQuestion).toBe(true);
 });
 
 test("when completing last step, then current step become the quiz result", () => {
@@ -38,6 +40,7 @@ test("when completing last step, then current step become the quiz result", () =
 
   expect(quizStore.currentQuestion).toBeNull();
   expect(quizStore.quizResult).toBe(fakeResult);
+  expect(quizStore.canAskQuestion).toBe(false);
 });
 
 test("when no questions, then current step is null", () => {
@@ -45,6 +48,7 @@ test("when no questions, then current step is null", () => {
 
   expect(quizStore.currentQuestion).toBeNull();
   expect(quizStore.quizResult).toBeNull();
+  expect(quizStore.canAskQuestion).toBe(false);
 });
 
 describe("reactivity", () => {
@@ -74,6 +78,21 @@ describe("reactivity", () => {
     );
 
     quizStore.currentQuestion!.setAnswer(0);
+    quizStore.currentQuestion!.setAnswer(0);
+
+    expect(reactionTriggered).toBe(true);
+  });
+
+  test("when step changes, then canAskQuestion is recomputed", () => {
+    const quizStore = createQuizStore(getTwoQuestions());
+    let reactionTriggered = false;
+    reaction(
+      () => quizStore.canAskQuestion,
+      () => {
+        reactionTriggered = true;
+      }
+    );
+
     quizStore.currentQuestion!.setAnswer(0);
 
     expect(reactionTriggered).toBe(true);

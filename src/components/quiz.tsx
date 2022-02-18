@@ -1,21 +1,15 @@
 import { observer } from "mobx-react-lite";
-import { useErrorStore, useQuizStore } from "../store/storeContext";
-import { ErrorMessage } from "./errorMessage";
+import { useQuizStore } from "../store/storeContext";
+import { Header } from "./header";
 import { Question } from "./question";
-import { Result } from "./result";
 
-export const Quiz = observer(() => {
-  const { currentQuestion, quizResult } = useQuizStore();
-  const { error } = useErrorStore();
-  return (
-    <main className="vBox crossAxisCenter gap1">
-      {error ? (
-        <ErrorMessage message={error} />
-      ) : currentQuestion ? (
-        <Question question={currentQuestion} />
-      ) : quizResult ? (
-        <Result quizResult={quizResult} />
-      ) : null}
-    </main>
-  );
+export const Quiz = observer((): JSX.Element | null => {
+  const { currentQuestion } = useQuizStore();
+
+  return currentQuestion ? (
+    <>
+      <Header />
+      <Question question={currentQuestion} />
+    </>
+  ) : null;
 });
