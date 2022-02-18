@@ -36,14 +36,3 @@ export function getTwoRawQuestions(): RawRecipeQuestion[] {
     },
   ];
 }
-
-export function givenAQuestion(): RecipeQuestion {
-  return {
-    answers: [
-      { answer: "a11", id: 0 },
-      { answer: "a12", id: 1 },
-    ],
-    correctAnswerId: 0,
-    question: "q1",
-  };
-}

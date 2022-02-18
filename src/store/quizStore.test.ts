@@ -1,14 +1,11 @@
 import { reaction } from "mobx";
-import {
-  newQuizResult,
-  QuizResult,
-  RecipeQuestion,
-} from "../domain/definitions";
+import { QuizResult, RecipeQuestion } from "../domain/definitions";
+import { newQuizResult } from "../utils/quizUtils";
 import { getTwoQuestions } from "../__test__/utils/fakeData";
 import { IQuizStore, newQuizStore, UIQuestion } from "./quizStore";
 import { IRecipeStore } from "./recipeStore";
 
-jest.mock("../domain/definitions");
+jest.mock("../utils/quizUtils");
 const mockNewQuizResult = newQuizResult as jest.MockedFunction<
   typeof newQuizResult
 >;

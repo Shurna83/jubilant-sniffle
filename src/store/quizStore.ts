@@ -1,9 +1,6 @@
 import { makeAutoObservable, runInAction } from "mobx";
-import {
-  newQuizResult,
-  QuizResult,
-  RecipeQuestion,
-} from "../domain/definitions";
+import { QuizResult, RecipeQuestion } from "../domain/definitions";
+import { newQuizResult } from "../utils/quizUtils";
 import { IRecipeStore } from "./recipeStore";
 
 export type UIQuestion = Pick<RecipeQuestion, "question" | "answers"> & {
@@ -45,12 +42,12 @@ class QuizStore implements IQuizStore {
   public get quizResult(): QuizResult | null {
     return this.isQuestionStep
       ? null
-      : this._recipeStore.questions.length > 0
-      ? newQuizResult(
+      : this._recipeStore.questions.length === 0
+      ? null
+      : newQuizResult(
           this._correctAnswersCount,
           this._recipeStore.questions.length
-        )
-      : null;
+        );
   }
 
   public get isQuestionStep(): boolean {
