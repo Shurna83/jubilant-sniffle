@@ -1,13 +1,17 @@
 import { observer } from "mobx-react-lite";
-import { useQuizStore } from "../store/reactBindings";
+import { useErrorStore, useQuizStore } from "../store/reactBindings";
+import { ErrorMessage } from "./errorMessage";
 import { Question } from "./question";
 import { Result } from "./result";
 
 export const Quiz = observer(() => {
   const { currentQuestion, quizResult } = useQuizStore();
+  const { error } = useErrorStore();
   return (
     <main>
-      {currentQuestion ? (
+      {error ? (
+        <ErrorMessage message={error} />
+      ) : currentQuestion ? (
         <Question question={currentQuestion} />
       ) : quizResult ? (
         <Result quizResult={quizResult} />

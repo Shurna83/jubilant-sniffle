@@ -1,4 +1,5 @@
 import { createContext, useContext } from "react";
+import { IErrorStore } from "./errorsStore";
 import { IQuizStore } from "./quizStore";
 import { getRootStore, RootStore } from "./rootStore";
 
@@ -14,4 +15,8 @@ export function useRootStore(): RootStore {
 
 export function useQuizStore(): IQuizStore {
   return useRootStore().quizStore;
+}
+
+export function useErrorStore(): IErrorStore {
+  return useRootStore().errorStore;
 }

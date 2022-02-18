@@ -1,10 +1,11 @@
-import { newErrorStore } from "./errorsStore";
+import { IErrorStore, newErrorStore } from "./errorsStore";
 import { IQuizStore, newQuizStore } from "./quizStore";
 import { IRecipeStore, newRecipeStore } from "./recipeStore";
 
 export type RootStore = {
   quizStore: IQuizStore;
   recipeStore: IRecipeStore;
+  errorStore: IErrorStore;
   init(): Promise<void>;
 };
 
@@ -21,6 +22,7 @@ function newRootStore(): RootStore {
   return {
     quizStore,
     recipeStore,
+    errorStore,
     init: async () => {
       await recipeStore.start();
     },

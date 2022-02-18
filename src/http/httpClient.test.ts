@@ -12,25 +12,22 @@ const mockIsAxiosError = axios.isAxiosError as jest.MockedFunction<
   typeof axios.isAxiosError
 >;
 
-afterEach(() => {
-  mockAxiosGet.mockReset();
-});
-
 describe("httpGet", () => {
   test("when invoked, then should make proper GET request", async () => {
     const url = "myFile.txt";
     mockAxiosGet.mockResolvedValueOnce({ data: "OK" });
 
-    await httpGet<string>(url);
+    await httpGet(url);
 
     expect(mockAxiosGet).toBeCalledTimes(1);
     expect(mockAxiosGet).toBeCalledWith(url);
   });
 
   test("when invoked, then should resolve with fetched data", async () => {
-    mockAxiosGet.mockResolvedValueOnce({ data: "OK" });
+    const resObj = { aField: "aFieldValue" };
+    mockAxiosGet.mockResolvedValueOnce({ data: resObj });
 
-    await ensureRight("OK");
+    await ensureRight(resObj);
   });
 
   test("when GET request fails, then should resolve with proper error", async () => {
@@ -74,9 +71,9 @@ function ensureLeft(msg: string): Promise<void> {
   } as Left<string>);
 }
 
-function ensureRight(msg: string): Promise<void> {
+function ensureRight(value: unknown): Promise<void> {
   return expect(httpGet("myUrl")).resolves.toEqual({
-    value: msg,
+    value,
     tag: "right",
-  } as Right<string>);
+  } as Right<unknown>);
 }

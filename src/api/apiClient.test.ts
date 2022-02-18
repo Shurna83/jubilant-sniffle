@@ -2,7 +2,7 @@ import { httpGet } from "../http/httpClient";
 import { isLeft, isRight, left, right } from "../utils/either";
 import {
   getTwoQuestions,
-  getTwoQuestionsJSON,
+  getTwoRawQuestions,
 } from "../__test__/utils/fakeData";
 import { fetchQuestions } from "./apiClient";
 
@@ -15,7 +15,7 @@ afterEach(() => {
 
 describe("fetchQuestions", () => {
   test("should make proper GET request", async () => {
-    mockHttpGet.mockResolvedValueOnce(right("{}"));
+    mockHttpGet.mockResolvedValueOnce(right({}));
 
     await fetchQuestions();
 
@@ -24,23 +24,13 @@ describe("fetchQuestions", () => {
   });
 
   test("should parse response data", async () => {
-    const jsonQuestions = getTwoQuestionsJSON();
-    mockHttpGet.mockResolvedValueOnce(right(jsonQuestions));
+    const rawQuestions = getTwoRawQuestions();
+    mockHttpGet.mockResolvedValueOnce(right(rawQuestions));
 
     const res = await fetchQuestions();
 
     expect(isRight(res)).toBeTruthy();
     expect(res.value).toStrictEqual(getTwoQuestions());
-  });
-
-  test("when error parsing JSON, then should resolve with error", async () => {
-    const jsonQuestions = `] invalid json [`;
-    mockHttpGet.mockResolvedValueOnce(right(jsonQuestions));
-
-    const res = await fetchQuestions();
-
-    expect(isLeft(res)).toBeTruthy();
-    expect(res.value).toBe("Cannot understand server response");
   });
 
   test("when httpGet fails, then error is propagated", async () => {
