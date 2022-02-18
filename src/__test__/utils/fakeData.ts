@@ -22,10 +22,6 @@ export function getTwoQuestions(): RecipeQuestion[] {
   ];
 }
 
-export function getTwoRawQuestionsJSON(): string {
-  return JSON.stringify(getTwoRawQuestions());
-}
-
 export function getTwoRawQuestions(): RawRecipeQuestion[] {
   return [
     {
@@ -39,4 +35,15 @@ export function getTwoRawQuestions(): RawRecipeQuestion[] {
       correct: 1,
     },
   ];
+}
+
+export function givenAQuestion(): RecipeQuestion {
+  return {
+    answers: [
+      { answer: "a11", id: 0 },
+      { answer: "a12", id: 1 },
+    ],
+    correctAnswerId: 0,
+    question: "q1",
+  };
 }

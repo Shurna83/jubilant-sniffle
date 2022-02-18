@@ -2,6 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
+import { RootContext } from "./store/reactBindings";
+import { newRootStore } from "./store/rootStore";
 
 if (
   !new (class {
@@ -13,7 +15,9 @@ if (
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <RootContext.Provider value={newRootStore()}>
+      <App />
+    </RootContext.Provider>
   </React.StrictMode>,
   document.getElementById("root")
 );

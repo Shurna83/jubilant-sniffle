@@ -9,10 +9,6 @@ import { fetchQuestions } from "./apiClient";
 jest.mock("../http/httpClient");
 const mockHttpGet = httpGet as jest.MockedFunction<typeof httpGet>;
 
-afterEach(() => {
-  mockHttpGet.mockReset();
-});
-
 describe("fetchQuestions", () => {
   test("should make proper GET request", async () => {
     mockHttpGet.mockResolvedValueOnce(right({}));
@@ -41,5 +37,16 @@ describe("fetchQuestions", () => {
 
     expect(isLeft(res)).toBeTruthy();
     expect(res.value).toBe(errMess);
+  });
+
+  test("when malformed data, then should propagate error", async () => {
+    mockHttpGet.mockResolvedValueOnce(right({}));
+
+    const res = await fetchQuestions();
+
+    expect(isLeft(res)).toBeTruthy();
+    expect(
+      (res.value as string).startsWith(`Cannot understand server response:`)
+    ).toBe(true);
   });
 });

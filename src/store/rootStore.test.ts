@@ -1,7 +1,7 @@
 import { IErrorStore, newErrorStore } from "./errorsStore";
 import { IQuizStore, newQuizStore } from "./quizStore";
 import { IRecipeStore, newRecipeStore } from "./recipeStore";
-import { getRootStore } from "./rootStore";
+import { newRootStore } from "./rootStore";
 
 jest.mock("./errorsStore");
 const mockNewErrorStore = newErrorStore as jest.MockedFunction<
@@ -24,21 +24,14 @@ afterEach(() => {
   mockNewQuizStore.mockReset();
 });
 
-describe("getRootStore", () => {
+describe("newRootStore", () => {
   test("new instance is created", () => {
     fakeNewStoreFuncs();
 
-    const rootStore = getRootStore();
+    const rootStore = newRootStore();
 
     expect(rootStore).toBeDefined();
     expect(rootStore).not.toBeNull();
-  });
-
-  test("when invoked twice, then same instance is returned", () => {
-    fakeNewStoreFuncs();
-
-    // eslint-disable-next-line no-self-compare
-    expect(getRootStore() === getRootStore()).toBe(true);
   });
 });
 

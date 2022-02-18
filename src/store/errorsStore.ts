@@ -2,7 +2,6 @@ import { makeAutoObservable } from "mobx";
 
 export interface IErrorStore {
   readonly error: string | null;
-  clear(): void;
   setError(err: string): void;
 }
 
@@ -15,10 +14,6 @@ class ErrorStore implements IErrorStore {
 
   public get error(): string | null {
     return this._error;
-  }
-
-  public clear(): void {
-    this._error = null;
   }
 
   public setError(err: string): void {

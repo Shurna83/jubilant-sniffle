@@ -1,22 +1,24 @@
 import React, { useEffect } from "react";
 import { Header } from "./components/header";
 import { Quiz } from "./components/quiz";
-import { RootContext } from "./store/reactBindings";
-import { getRootStore, RootStore } from "./store/rootStore";
+import { useRootStore } from "./store/reactBindings";
+import { RootStore } from "./store/rootStore";
 
 function App() {
+  const rootStore = useRootStore();
+
   useEffect(() => {
     const kickItAllOff = async (rootStore: RootStore) => {
       await rootStore.init();
     };
-    const rootStore = getRootStore();
     kickItAllOff(rootStore);
-  }, []);
+  }, [rootStore]);
+
   return (
-    <RootContext.Provider value={getRootStore()}>
+    <>
       <Header />
       <Quiz />
-    </RootContext.Provider>
+    </>
   );
 }
 

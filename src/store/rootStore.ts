@@ -9,12 +9,7 @@ export type RootStore = {
   init(): Promise<void>;
 };
 
-let rootStore: RootStore | null = null;
-export function getRootStore(): RootStore {
-  return rootStore ?? (rootStore = newRootStore());
-}
-
-function newRootStore(): RootStore {
+export function newRootStore(): RootStore {
   const errorStore = newErrorStore();
   const recipeStore = newRecipeStore(errorStore);
   const quizStore = newQuizStore(recipeStore);

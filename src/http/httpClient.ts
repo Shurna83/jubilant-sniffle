@@ -5,7 +5,8 @@ export async function httpGet<TResult>(
   url: string
 ): Promise<Either<string, TResult>> {
   try {
-    const { data } = await axios.get(url);
+    const gino = await axios.get(url);
+    const { data } = gino;
     return right(data as TResult);
   } catch (e) {
     return left(parseAxiosError(e));

@@ -16,19 +16,3 @@ test("when error is set, then computed is stimulated", () => {
 
   expect(receivedError).toEqual(errMsg);
 });
-
-test("when error is cleared, then computed is stimulated", () => {
-  const store = newErrorStore();
-  let receivedError: string | null = "init value";
-  reaction(
-    () => store.error,
-    (err) => {
-      receivedError = err;
-    }
-  );
-
-  store.setError("an error");
-  store.clear();
-
-  expect(receivedError).toBeNull();
-});

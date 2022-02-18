@@ -1,16 +1,20 @@
 import { createContext, useContext } from "react";
 import { IErrorStore } from "./errorsStore";
 import { IQuizStore } from "./quizStore";
-import { getRootStore, RootStore } from "./rootStore";
+import { newRootStore, RootStore } from "./rootStore";
 
 export const RootContext = createMobXRootContext();
 
 function createMobXRootContext() {
-  return createContext<RootStore>(getRootStore());
+  return createContext<RootStore>(newRootStore());
 }
 
 export function useRootStore(): RootStore {
-  return useContext(RootContext);
+  const ctx = useContext(RootContext);
+  if (!ctx) {
+    throw new Error("Undefined context");
+  }
+  return ctx;
 }
 
 export function useQuizStore(): IQuizStore {

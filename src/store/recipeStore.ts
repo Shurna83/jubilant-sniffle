@@ -33,6 +33,5 @@ class RecipeStore implements IRecipeStore {
 }
 
 export function newRecipeStore(errorStore: IErrorStore): IRecipeStore {
-  const store = new RecipeStore(errorStore);
-  return store;
+  return new RecipeStore(errorStore);
 }
