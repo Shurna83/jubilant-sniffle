@@ -15,10 +15,10 @@ function App() {
   }, [rootStore]);
 
   return (
-    <>
+    <div className="vBox crossAxisCenter gap3">
       <Header />
       <Quiz />
-    </>
+    </div>
   );
 }
 

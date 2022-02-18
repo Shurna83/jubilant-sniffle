@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
+import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 import { newRootStore } from "./store/rootStore";
 import { RootContext } from "./store/storeContext";

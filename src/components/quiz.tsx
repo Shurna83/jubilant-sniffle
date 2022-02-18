@@ -8,7 +8,7 @@ export const Quiz = observer(() => {
   const { currentQuestion, quizResult } = useQuizStore();
   const { error } = useErrorStore();
   return (
-    <main>
+    <main className="vBox crossAxisCenter gap1">
       {error ? (
         <ErrorMessage message={error} />
       ) : currentQuestion ? (

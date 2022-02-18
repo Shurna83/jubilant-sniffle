@@ -11,7 +11,7 @@ export function AnswersList({
   onClick,
 }: AnswersListProps): JSX.Element {
   return (
-    <ol>
+    <ol className="answersList">
       {answers.map((answer) => (
         <AnswerItem answer={answer} key={answer.id} onClick={onClick} />
       ))}

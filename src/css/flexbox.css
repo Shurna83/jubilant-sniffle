@@ -1,0 +1,19 @@
+.vBox {
+  display: flex;
+  flex-direction: column;
+}
+.crossAxisCenter {
+  align-items: center;
+}
+
+.gap1 {
+  gap: 1rem;
+}
+
+.gap2 {
+  gap: 2rem;
+}
+
+.gap3 {
+  gap: 3rem;
+}

@@ -1,0 +1,12 @@
+h1,
+h2,
+h3 {
+  color: var(--quiz-text-color);
+  font-weight: bold;
+}
+
+h4 {
+  color: var(--quiz-primary-color);
+  text-transform: uppercase;
+  font-weight: bold;
+}

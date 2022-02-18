@@ -9,7 +9,7 @@ export function Question({ question }: QuestionProps): JSX.Element {
   };
   return (
     <>
-      <h3>{question.question}</h3>
+      <h4 className="questionText">{question.question}</h4>
       <AnswersList answers={question.answers} onClick={handleUserAnswer} />
     </>
   );
