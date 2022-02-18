@@ -8,7 +8,7 @@ export function Question({ question }: QuestionProps) {
     question.setAnswer(id);
   };
   return (
-    <div className="question">
+    <div className="vBox crossAxisCenter question">
       <h4 className="questionText">{question.question}</h4>
       <AnswersList answers={question.answers} onClick={handleUserAnswer} />
     </div>

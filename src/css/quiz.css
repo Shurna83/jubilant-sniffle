@@ -7,5 +7,9 @@
 }
 
 .questionText + .answersList {
-  margin-top: 1rem;
+  margin-top: 2rem;
+}
+
+.quizHeader + .question {
+  margin-top: 2rem;
 }
