@@ -2,6 +2,8 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import axios from "axios";
 import App from "./App";
+import { newRootStore } from "./store/rootStore";
+import { RootContext } from "./store/storeContext";
 import { getTwoRawQuestions } from "./__test__/utils/fakeData";
 
 jest.mock("axios", () => ({
@@ -17,7 +19,7 @@ afterEach(() => {
 it("when loaded, then data is fetched", () => {
   givenTwoQuestionsFetched();
 
-  render(<App />);
+  renderApp();
 
   expect(mockAxiosGet).toBeCalledTimes(1);
   expect(mockAxiosGet).toBeCalledWith("data.json");
@@ -58,9 +60,9 @@ it("when second question is answered, then result is displayed", async () => {
 
 function renderApp() {
   render(
-    // <RootContext.Provider value={newRootStore()}>
-    <App />
-    // </RootContext.Provider>
+    <RootContext.Provider value={newRootStore()}>
+      <App />
+    </RootContext.Provider>
   );
 }
 

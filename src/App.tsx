@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { Header } from "./components/header";
 import { Quiz } from "./components/quiz";
-import { useRootStore } from "./store/reactBindings";
 import { RootStore } from "./store/rootStore";
+import { useRootStore } from "./store/storeContext";
 
 function App() {
   const rootStore = useRootStore();

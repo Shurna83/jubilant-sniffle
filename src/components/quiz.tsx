@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import { useErrorStore, useQuizStore } from "../store/reactBindings";
+import { useErrorStore, useQuizStore } from "../store/storeContext";
 import { ErrorMessage } from "./errorMessage";
 import { Question } from "./question";
 import { Result } from "./result";

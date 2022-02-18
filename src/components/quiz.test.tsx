@@ -1,10 +1,10 @@
 import { render, screen } from "@testing-library/react";
 import { IErrorStore } from "../store/errorsStore";
 import { UIQuestion } from "../store/quizStore";
-import { useErrorStore, useQuizStore } from "../store/reactBindings";
+import { useErrorStore, useQuizStore } from "../store/storeContext";
 import { Quiz } from "./quiz";
 
-jest.mock("../store/reactBindings");
+jest.mock("../store/storeContext");
 const mockUseErrorStore = useErrorStore as jest.MockedFunction<
   typeof useErrorStore
 >;

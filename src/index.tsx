@@ -2,8 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { RootContext } from "./store/reactBindings";
 import { newRootStore } from "./store/rootStore";
+import { RootContext } from "./store/storeContext";
 
 if (
   !new (class {
